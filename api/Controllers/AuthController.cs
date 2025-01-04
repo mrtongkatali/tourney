@@ -1,3 +1,4 @@
+using api.Dtos.Auth;
 using api.Mappers;
 using Microsoft.AspNetCore.Mvc;
 using tourney.Repositories;
@@ -26,13 +27,43 @@ namespace api.Controllers
             return Ok(dto);
         }
 
-        // [HttpPost]
-        // [Route("register")]
-        // public IActionResult Register([FromBody] RegisterRequest request)
-        // {
-        //     var user = _userRepository.Register(request);
-        //     return Ok(user);
-        // }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById([FromRoute] int id)
+        {
+            var user = await _userRepository.GetByIdAsync(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(user.AsPartialResponse());
+        }
+
+        [HttpPost]
+        [Route("register")]
+        public async Task<IActionResult> Register([FromBody] RegisterUserRequestDto request)
+        {
+            if (request.Password != request.confirmPassword)
+            {
+                ModelState.AddModelError("Confirm Password", "Password and Confirm Password do not match.");
+            }
+
+            if (await _userRepository.CheckEmailUnique(request.Email) == false) {
+                ModelState.AddModelError("Email", "Email already exists");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var userRequest = request.ToModel();
+
+            await _userRepository.Create(userRequest, "");
+
+            return CreatedAtAction(nameof(GetById), new { id = userRequest.Id }, userRequest.AsPartialResponse()); 
+        }
 
     }
 }

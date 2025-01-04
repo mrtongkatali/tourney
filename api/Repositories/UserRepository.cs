@@ -2,6 +2,7 @@ using System.Security.Claims;
 using api.Dtos.Auth;
 using api.Mappers;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using tourney.Data;
 using tourney.Helpers;
@@ -18,18 +19,22 @@ namespace tourney.Repositories
             _dbContext = dbContext;
         }
 
+        public async Task<User?> GetByIdAsync(int id)
+        {
+            return await _dbContext.FindAsync<User>(id);
+        }
+
+        public async Task<bool> CheckEmailUnique(string email)
+        {
+            var user = await _dbContext.User.FirstOrDefaultAsync(u => u.Email == email);
+            return user == null;
+        }
         public async Task Create(User user, string confirmPassword)
         {
-            var existingUser = await _dbContext.User.FirstOrDefaultAsync(u => u.Email == user.Email);
-            if (existingUser != null)
-            {
-                throw new Exception("User with this email already exists.");
-            }
-
-            if (user.Password != confirmPassword)
-            {
-                throw new Exception("Password and Confirm Password do not match.");
-            }
+            // if (user.Password != confirmPassword)
+            // {
+            //     throw new Exception("Password and Confirm Password do not match.");
+            // }
 
             user.Password = PasswordHelper.HashPassword(user.Password);
 

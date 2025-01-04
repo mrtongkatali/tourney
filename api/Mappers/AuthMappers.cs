@@ -15,5 +15,16 @@ namespace api.Mappers
                 LastName = userModel.LastName
             };
         }
+
+        public static User ToModel(this RegisterUserRequestDto dto)
+        {
+            return new User
+            {
+                Email = dto.Email,
+                Password = dto.Password,
+                FirstName = dto.FirstName,
+                LastName = dto.LastName
+            };
+        }
     }
 }
