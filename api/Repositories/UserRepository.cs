@@ -31,24 +31,19 @@ namespace tourney.Repositories
         }
         public async Task Create(User user, string confirmPassword)
         {
-            // if (user.Password != confirmPassword)
-            // {
-            //     throw new Exception("Password and Confirm Password do not match.");
-            // }
-
             user.Password = PasswordHelper.HashPassword(user.Password);
 
             await _dbContext.User.AddAsync(user);
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<User> Authenticate(string email, string password)
+        public async Task<User?> Authenticate(string email, string password)
         {
             var user = await _dbContext.User.FirstOrDefaultAsync(u => u.Email == email);
 
             if (user == null || !PasswordHelper.VerifyPassword(password, user.Password))
             {
-                throw new Exception("Invalid email address or Password");
+                return null;
             }
 
             return user;

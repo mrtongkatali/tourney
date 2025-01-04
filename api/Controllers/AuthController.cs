@@ -19,7 +19,7 @@ namespace api.Controllers
 
         [HttpGet]
         [Route("users")]
-        public async Task<IActionResult> HelloWorld()
+        public async Task<IActionResult> GetAllUsers()
         {
             var users = await _userRepository.GetAllAsync();
             var dto = users.Select(s => s.AsPartialResponse());
@@ -65,5 +65,18 @@ namespace api.Controllers
             return CreatedAtAction(nameof(GetById), new { id = userRequest.Id }, userRequest.AsPartialResponse()); 
         }
 
+        [HttpPost]
+        [Route("login")]
+        public async Task<IActionResult> Authenticate([FromBody] LoginRequest request)
+        {
+            var user = await _userRepository.Authenticate(request.Email, request.Password);
+
+            if (user == null)
+            {
+                return BadRequest("Invalid email address or password");
+            }
+
+            return Ok(user.AsPartialResponse());
+        }
     }
 }
