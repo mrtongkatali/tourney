@@ -1,29 +1,38 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+using api.Mappers;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using tourney.Repositories;
 
 namespace api.Controllers
 {
-    [Route("api/stock")]
+    [Route("api/auth")]
     [ApiController]
     public class AuthController : ControllerBase 
     {
         private readonly ILogger<AuthController> _logger;
-
-        public AuthController(ILogger<AuthController> logger)
+        private readonly IUserRepository _userRepository;
+        public AuthController(ILogger<AuthController> logger, IUserRepository userRepository)
         {
             _logger = logger;
+            _userRepository = userRepository;
         }
 
         [HttpGet]
-        public IActionResult HelloWorld()
+        [Route("users")]
+        public async Task<IActionResult> HelloWorld()
         {
-            return Ok("Hello World");
+            var users = await _userRepository.GetAllAsync();
+            var dto = users.Select(s => s.AsPartialResponse());
+
+            return Ok(dto);
         }
+
+        // [HttpPost]
+        // [Route("register")]
+        // public IActionResult Register([FromBody] RegisterRequest request)
+        // {
+        //     var user = _userRepository.Register(request);
+        //     return Ok(user);
+        // }
 
     }
 }
