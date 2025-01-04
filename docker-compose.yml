@@ -1,0 +1,62 @@
+version: "3"
+services:
+  tourney_pg_data:
+    image: postgres:15.3-alpine
+    container_name: tourney_pg_data
+    environment:
+      POSTGRES_DB: tourneydb 
+      POSTGRES_USER: tourney 
+      POSTGRES_PASSWORD: tourney 
+      PGTZ: UTC
+    ports:
+      - 5432:5432
+    expose:
+      - 5432
+    volumes:
+      - tourney_pg_data:/var/lib/postgresql/data
+    networks:
+      - tourney_network
+
+  # tourney_redis:
+  #   image: redis:7-alpine
+  #   container_name: tourney_redis
+  #   environment:
+  #     - ALLOW_EMPTY_PASSWORD=yes
+  #   ports:
+  #     - "6379:6379"
+  #   expose:
+  #     - 6379
+  #   volumes:
+  #     - ./tourney_redis:/tourney_redis
+  #   networks:
+  #     - tourney_network
+
+  # api:
+  #   container_name: tourney_api
+  #   build:
+  #     context: .
+  #     dockerfile: build/docker/api/Dockerfile
+  #   environment:
+  #     - NODE_ENV=local
+  #   ports:
+  #     - "3001:3000"
+  #   volumes:
+  #     - ./api:/api
+  #     - /api/node_modules
+  #   depends_on:
+  #     - tourney_pg_data
+  #   extra_hosts:
+  #     - "host.docker.internal:host-gateway"
+  #   networks:
+  #     - tourney_network
+
+volumes:
+  tourney_pg_data:
+    driver: local
+  
+  # tourney_redis:
+  #   driver: local
+
+networks:
+  tourney_network:
+    driver: bridge
