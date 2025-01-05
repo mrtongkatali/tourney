@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace tourney.Models;
+namespace tourney.api.Models;
 
 public abstract class BaseEntity 
 {

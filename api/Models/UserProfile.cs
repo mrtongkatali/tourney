@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
-using tourney.Models;
 
-namespace api.Models
+namespace tourney.api.Models
 {
     [Table("user_profiles")]
     public class UserProfile : BaseEntity

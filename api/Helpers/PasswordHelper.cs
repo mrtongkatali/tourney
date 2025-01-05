@@ -1,6 +1,5 @@
-using BCrypt.Net;
 
-namespace tourney.Helpers
+namespace tourney.api.Helpers
 {
     public class PasswordHelper
     {

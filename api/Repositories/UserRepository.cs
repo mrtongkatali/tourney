@@ -1,14 +1,9 @@
-using System.Security.Claims;
-using api.Dtos.Auth;
-using api.Mappers;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using tourney.Data;
-using tourney.Helpers;
-using tourney.Models;
+using tourney.api.Data;
+using tourney.api.Helpers;
+using tourney.api.Models;
 
-namespace tourney.Repositories
+namespace tourney.api.Repositories
 {
    public class UserRepository : IUserRepository 
    {

@@ -1,7 +1,6 @@
-using api.Dtos.Auth;
-using tourney.Models;
+using tourney.api.Models;
 
-namespace tourney.Repositories
+namespace tourney.api.Repositories
 {
     public interface IUserRepository
     {

@@ -1,8 +1,6 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using tourney.Models;
-
 public enum Status
 {
     [Description("Active")]
@@ -21,7 +19,7 @@ public enum TournamentType
     KNOCKOUT = 2,
 }
 
-namespace api.Models
+namespace tourney.api.Models
 {
     [Table("tournaments")]
     public class Tournament : BaseEntity

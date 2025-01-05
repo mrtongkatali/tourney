@@ -1,10 +1,8 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using api.Models;
 
-namespace tourney.Models;
-
+namespace tourney.api.Models;
 public enum UserStatus 
 {
     [Description("Active")]

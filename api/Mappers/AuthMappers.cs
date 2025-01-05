@@ -1,7 +1,7 @@
-using api.Dtos.Auth;
-using tourney.Models;
+using tourney.api.Dtos.Auth;
+using tourney.api.Models;
 
-namespace api.Mappers
+namespace tourney.api.Mappers
 {
     public static class AuthMappers
     {

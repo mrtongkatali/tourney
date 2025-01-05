@@ -1,9 +1,9 @@
-using api.Dtos.Auth;
-using api.Mappers;
+using tourney.api.Dtos.Auth;
+using tourney.api.Mappers;
 using Microsoft.AspNetCore.Mvc;
-using tourney.Repositories;
+using tourney.api.Repositories;
 
-namespace api.Controllers
+namespace tourney.api.Controllers
 {
     [Route("api/auth")]
     [ApiController]

@@ -1,8 +1,7 @@
-using api.Models;
+using tourney.api.Models;
 using Microsoft.EntityFrameworkCore;
-using tourney.Models;
 
-namespace tourney.Data
+namespace tourney.api.Data
 {
     public class ApplicationDbContext : DbContext
     {
@@ -13,6 +12,7 @@ namespace tourney.Data
 
         public DbSet<User> User { get; set; } = default!;
         public DbSet<UserProfile> UserProfile { get; set; } = default!;
+        public DbSet<Tournament> Tournament { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using tourney.Data;
-using tourney.Repositories;
+using tourney.api.Data;
+using tourney.api.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,11 +20,13 @@ var app = builder.Build();
 var scope = app.Services.CreateScope();
 var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-if (args.Contains("seed:users"))
+if (args.Contains("seed:all"))
 {
-    Seeder.SeedUsers(context);
+    Seeder.SeedAll(context);
     Console.WriteLine("Database seeded!");
 }
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

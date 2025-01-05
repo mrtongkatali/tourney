@@ -1,4 +1,4 @@
-namespace api.Dtos.Auth
+namespace tourney.api.Dtos.Auth
 {
     public class AuthDto
     {
