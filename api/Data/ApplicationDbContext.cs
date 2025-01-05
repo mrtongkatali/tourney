@@ -22,10 +22,17 @@ namespace tourney.Data
                 .HasIndex(e => e.Email)
                 .IsUnique();
             
-            modelBuilder.Entity<User>()
-                .HasOne(e => e.UserProfile)
-                .WithOne(e => e.User)
-                .HasForeignKey<UserProfile>(e => e.Id);
+            modelBuilder.Entity<UserProfile>()
+                .HasOne(e => e.User)
+                .WithOne(e => e.UserProfile)
+                .HasForeignKey<UserProfile>(e => e.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Tournament>()
+                .HasOne(e => e.User)
+                .WithMany(e => e.Tournaments)
+                .HasForeignKey(e => e.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
