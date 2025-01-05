@@ -41,4 +41,5 @@ public class User : BaseEntity
     public UserStatus Status { get; set; } = UserStatus.ACTIVE;
 
     public UserProfile? UserProfile { get; set; } // Navigation Property
+    public ICollection<Tournament> Tournaments { get; set; } = new List<Tournament>(); // Navigation Property
 }

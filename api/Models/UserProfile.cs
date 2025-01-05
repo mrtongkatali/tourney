@@ -9,5 +9,8 @@ namespace api.Models
         public int Id { get; set; }
 
         public User? User { get; set; } // Navigation Property
+        
+        [Column("user_id")]
+        public int UserId { get; set; }
     }
 }
