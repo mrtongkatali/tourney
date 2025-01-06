@@ -1,15 +1,16 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-public enum Status
+
+namespace tourney.api.Models;
+public enum TournamentStatus 
 {
-    [Description("Active")]
-    ACTIVE = 1,
+    [Description("Live")]
+    LIVE = 1,
 
-    [Description("Inactive")]
-    INACTIVE = 2,
+    [Description("Draft")]
+    PENDING = 2,
 }
-
 public enum TournamentType
 {
     [Description("Hybrid")]
@@ -19,31 +20,29 @@ public enum TournamentType
     KNOCKOUT = 2,
 }
 
-namespace tourney.api.Models
+[Table("tournaments")]
+public class Tournament : BaseEntity
 {
-    [Table("tournaments")]
-    public class Tournament : BaseEntity
-    {
-        [Key]
-        [Column("id")]
-        public int Id { get; set; }
+    [Key]
+    [Column("id")]
+    public int Id { get; set; }
 
-        [Column("userId")]
-        public int UserId { get; set; }
+    [Column("userId")]
+    public int UserId { get; set; }
 
-        [Column("name", TypeName = "varchar(100)")]
-        [Required(ErrorMessage = "Tournament name is required")]
-        public string Name { get; set; } = string.Empty;
+    [Column("name", TypeName = "varchar(100)")]
+    [Required(ErrorMessage = "Tournament name is required")]
+    public string Name { get; set; } = string.Empty;
 
-        [Column("description", TypeName = "varchar(255)")]
-        public string Description { get; set; } = string.Empty;
+    [Column("description", TypeName = "varchar(255)")]
+    public string Description { get; set; } = string.Empty;
 
-        [Column("status")]
-        public Status Status { get; set; } = Status.ACTIVE;
+    [Column("status")]
+    public TournamentStatus Status { get; set; } = TournamentStatus.LIVE;
 
-        [Column("tournamentType")]
-        public TournamentType TournamentType { get; set; } = TournamentType.HYBRID;
+    [Column("tournament_type")]
+    public TournamentType TournamentType { get; set; } = TournamentType.HYBRID;
 
-        public User? User { get; set; }
-    }
+    public User? User { get; set; }
+    public ICollection<Team> Teams { get; set; } = new List<Team>();
 }

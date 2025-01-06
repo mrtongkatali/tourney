@@ -12,7 +12,7 @@ using tourney.api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250105142048_InitialSchema")]
+    [Migration("20250106154139_InitialSchema")]
     partial class InitialSchema
     {
         /// <inheritdoc />
@@ -25,7 +25,40 @@ namespace api.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("api.Models.Tournament", b =>
+            modelBuilder.Entity("tourney.api.Models.Team", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("name");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.Property<int>("tournamentId")
+                        .HasColumnType("integer")
+                        .HasColumnName("tournament_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("tournamentId");
+
+                    b.ToTable("teams");
+                });
+
+            modelBuilder.Entity("tourney.api.Models.Tournament", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -54,7 +87,7 @@ namespace api.Migrations
 
                     b.Property<int>("TournamentType")
                         .HasColumnType("integer")
-                        .HasColumnName("tournamentType");
+                        .HasColumnName("tournament_type");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
@@ -71,35 +104,7 @@ namespace api.Migrations
                     b.ToTable("tournaments");
                 });
 
-            modelBuilder.Entity("api.Models.UserProfile", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("updated_at");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer")
-                        .HasColumnName("user_id");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("user_profiles");
-                });
-
-            modelBuilder.Entity("tourney.Models.User", b =>
+            modelBuilder.Entity("tourney.api.Models.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -148,9 +153,48 @@ namespace api.Migrations
                     b.ToTable("users");
                 });
 
-            modelBuilder.Entity("api.Models.Tournament", b =>
+            modelBuilder.Entity("tourney.api.Models.UserProfile", b =>
                 {
-                    b.HasOne("tourney.Models.User", "User")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("user_profiles");
+                });
+
+            modelBuilder.Entity("tourney.api.Models.Team", b =>
+                {
+                    b.HasOne("tourney.api.Models.Tournament", "Tournament")
+                        .WithMany("Teams")
+                        .HasForeignKey("tournamentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tournament");
+                });
+
+            modelBuilder.Entity("tourney.api.Models.Tournament", b =>
+                {
+                    b.HasOne("tourney.api.Models.User", "User")
                         .WithMany("Tournaments")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -159,18 +203,23 @@ namespace api.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("api.Models.UserProfile", b =>
+            modelBuilder.Entity("tourney.api.Models.UserProfile", b =>
                 {
-                    b.HasOne("tourney.Models.User", "User")
+                    b.HasOne("tourney.api.Models.User", "User")
                         .WithOne("UserProfile")
-                        .HasForeignKey("api.Models.UserProfile", "UserId")
+                        .HasForeignKey("tourney.api.Models.UserProfile", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("tourney.Models.User", b =>
+            modelBuilder.Entity("tourney.api.Models.Tournament", b =>
+                {
+                    b.Navigation("Teams");
+                });
+
+            modelBuilder.Entity("tourney.api.Models.User", b =>
                 {
                     b.Navigation("Tournaments");
 

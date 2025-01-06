@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -40,7 +41,7 @@ namespace api.Migrations
                     name = table.Column<string>(type: "varchar(100)", nullable: false),
                     description = table.Column<string>(type: "varchar(255)", nullable: false),
                     status = table.Column<int>(type: "integer", nullable: false),
-                    tournamentType = table.Column<int>(type: "integer", nullable: false),
+                    tournament_type = table.Column<int>(type: "integer", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -76,6 +77,33 @@ namespace api.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "teams",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    tournament_id = table.Column<int>(type: "integer", nullable: false),
+                    name = table.Column<string>(type: "varchar(50)", nullable: false),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_teams", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_teams_tournaments_tournament_id",
+                        column: x => x.tournament_id,
+                        principalTable: "tournaments",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_teams_tournament_id",
+                table: "teams",
+                column: "tournament_id");
+
             migrationBuilder.CreateIndex(
                 name: "IX_tournaments_userId",
                 table: "tournaments",
@@ -98,10 +126,13 @@ namespace api.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "tournaments");
+                name: "teams");
 
             migrationBuilder.DropTable(
                 name: "user_profiles");
+
+            migrationBuilder.DropTable(
+                name: "tournaments");
 
             migrationBuilder.DropTable(
                 name: "users");

@@ -7,6 +7,8 @@ namespace tourney.api.Data
         public static void SeedAll(ApplicationDbContext context)
         {
             SeedUsers(context);
+            SeedTournaments(context);
+            SeedTeams(context);
         }
         public static void SeedUsers(ApplicationDbContext context)
         {
@@ -18,7 +20,7 @@ namespace tourney.api.Data
                         FirstName = "One",
                         LastName = "User",
                         Password = "$2a$11$xxSr0TbY8Z35dqCMe.mL3uZmwRys.n6ShpzMByo1PsmORKwgy0hZy",
-                        Status = Models.UserStatus.ACTIVE,
+                        Status = UserStatus.ACTIVE,
                     },
                     new User
                     {
@@ -26,24 +28,76 @@ namespace tourney.api.Data
                         FirstName = "Two",
                         LastName = "User",
                         Password = "$2a$11$xxSr0TbY8Z35dqCMe.mL3uZmwRys.n6ShpzMByo1PsmORKwgy0hZy",
-                        Status = Models.UserStatus.ACTIVE,
+                        Status = UserStatus.ACTIVE,
                     }
                 );
 
             context.SaveChanges();
         }
 
-        // public static void SeedTournaments(ApplicationDbContext context)
-        // {
-        //     context.Tournament
-        //         .AddRange(
-        //             new Tournament
-        //             {
-        //                 Name = "Tournament 1",
-        //                 UserId = 1,
-        //                 // Status = Models.Tournament.,
-        //             },
-        //         )
-        // }
+        public static void SeedTournaments(ApplicationDbContext context)
+        {
+            context.Tournament
+                .AddRange(
+                    new Tournament
+                    {
+                        Name = "ESL One Cologne 2025",
+                        UserId = 1,
+                        TournamentType = TournamentType.HYBRID,
+                        Status = TournamentStatus.LIVE,
+                    }
+                );
+            
+            context.SaveChanges();
+        }
+
+        public static void SeedTeams(ApplicationDbContext context)
+        {
+            context.Team
+                .AddRange(
+                    new Team
+                    {
+                        Name = "Astralis",
+                        tournamentId = 1,
+                    },
+                    new Team
+                    {
+                        Name = "Natus Vincere",
+                        tournamentId = 1,
+                    },
+                    new Team
+                    {
+                        Name = "Team Liquid",
+                        tournamentId = 1,
+                    },
+                    new Team
+                    {
+                        Name = "G2 Esports",
+                        tournamentId = 1,
+                    },
+                    new Team
+                    {
+                        Name = "FaZe Clan",
+                        tournamentId = 1,
+                    },
+                    new Team
+                    {
+                        Name = "Fnatic",
+                        tournamentId = 1,
+                    },
+                    new Team
+                    {
+                        Name = "Virtus.pro",
+                        tournamentId = 1,
+                    },
+                    new Team
+                    {
+                        Name = "BIG",
+                        tournamentId = 1,
+                    }
+                );
+            
+            context.SaveChanges();
+        }
     }
 }

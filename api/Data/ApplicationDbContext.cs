@@ -13,6 +13,7 @@ namespace tourney.api.Data
         public DbSet<User> User { get; set; } = default!;
         public DbSet<UserProfile> UserProfile { get; set; } = default!;
         public DbSet<Tournament> Tournament { get; set; } = default!;
+        public DbSet<Team> Team { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -32,6 +33,12 @@ namespace tourney.api.Data
                 .HasOne(e => e.User)
                 .WithMany(e => e.Tournaments)
                 .HasForeignKey(e => e.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Team>()
+                .HasOne(e => e.Tournament)
+                .WithMany(e => e.Teams)
+                .HasForeignKey(e => e.tournamentId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }
