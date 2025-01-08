@@ -2,6 +2,7 @@ using tourney.api.Dtos.Auth;
 using tourney.api.Mappers;
 using Microsoft.AspNetCore.Mvc;
 using tourney.api.Repositories;
+using tourney.api.Services;
 
 namespace tourney.api.Controllers
 {
@@ -11,10 +12,12 @@ namespace tourney.api.Controllers
     {
         private readonly ILogger<AuthController> _logger;
         private readonly IUserRepository _userRepository;
-        public AuthController(ILogger<AuthController> logger, IUserRepository userRepository)
+        private readonly JwtService _jwtService;
+        public AuthController(ILogger<AuthController> logger, IUserRepository userRepository, JwtService jwtService)
         {
             _logger = logger;
             _userRepository = userRepository;
+            _jwtService = jwtService;
         }
 
         [HttpGet]
@@ -76,7 +79,12 @@ namespace tourney.api.Controllers
                 return BadRequest("Invalid email address or password");
             }
 
-            return Ok(user.AsPartialResponse());
+            string token = _jwtService.GenerateToken(user.Email);
+
+            return Ok(new {
+                Token = token,
+                Data = user.AsPartialResponse()
+            });
         }
     }
 }
