@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using tourney.api.Dtos.Tournament;
 
 namespace tourney.api.Controllers
 {
@@ -13,7 +14,7 @@ namespace tourney.api.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create()
+        public IActionResult Create([FromBody] CreateTourneyDto request)
         {
             return Ok("Create a new tournament");
         }

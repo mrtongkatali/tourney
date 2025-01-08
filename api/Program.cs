@@ -26,8 +26,6 @@ if (args.Contains("seed:all"))
     Console.WriteLine("Database seeded!");
 }
 
-
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

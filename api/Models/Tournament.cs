@@ -34,7 +34,7 @@ public class Tournament : BaseEntity
     [Required(ErrorMessage = "Tournament name is required")]
     public string Name { get; set; } = string.Empty;
 
-    [Column("description", TypeName = "varchar(255)")]
+    [Column("description", TypeName = "varchar(2000)")]
     public string Description { get; set; } = string.Empty;
 
     [Column("status")]
