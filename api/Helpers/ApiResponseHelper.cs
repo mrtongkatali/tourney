@@ -6,9 +6,9 @@ public class ApiResponse<T>
     public T? Data { get; set; }
     public string Message { get; set; } = string.Empty;
 
-    public List<string>? Errors { get; set; } = [];
+    public Dictionary<string, List<string?>> Errors { get; set; }
 
-    public ApiResponse(bool success, T? data, string message, List<string>? errors = default)
+    public ApiResponse(bool success, T? data, string message, Dictionary<string, List<string?>> errors)
     {
         Success = success;
         Data = data;
@@ -18,23 +18,23 @@ public class ApiResponse<T>
 }
 public class ApiResponseHelper
 {
-   public static ApiResponse<T> Success<T>(T? data, string message, List<string>? errors = default)
+   public static ApiResponse<T> Success<T>(T? data, string message) 
    {
-       return new ApiResponse<T>(true, data, message, errors);
+       return new ApiResponse<T>(true, data, message, []);
    }
 
    public static ApiResponse<string> Success(string message)
    {
-       return new ApiResponse<string>(true, null, message, new List<string>());
+       return new ApiResponse<string>(true, null, message, []);
    }
 
-   public static ApiResponse<T> Error<T>(string message, List<string> errors)
+   public static ApiResponse<T> Error<T>(string message, Dictionary<string, List<string?>> errors)
    {
        return new ApiResponse<T>(false, default, message, errors);
    }
 
    public static ApiResponse<string> Error(string message)
    {
-       return new ApiResponse<string>(false, null, message, new List<string>());
+       return new ApiResponse<string>(false, null, message, []);
    }
 }
