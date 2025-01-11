@@ -11,5 +11,18 @@ namespace api.Helpers
                 .Select(s => s.ErrorMessage)
                 .ToList();
         }
+
+        public static Dictionary<string, List<string?>> GetFieldErrors(ModelStateDictionary modelState)
+        {
+            return modelState
+                .Where(kvp => kvp.Value.Errors.Any()) // Only include fields with errors
+                .ToDictionary(
+                    kvp => kvp.Key, // Use the field name as the key
+                    kvp => kvp.Value.Errors
+                        .Select(e => !string.IsNullOrEmpty(e.ErrorMessage) ? e.ErrorMessage : e.Exception?.Message)
+                        .Where(msg => !string.IsNullOrEmpty(msg)) // Filter out null or empty messages
+                        .ToList() // Collect all error messages for the field
+                );
+        } 
     }
 }

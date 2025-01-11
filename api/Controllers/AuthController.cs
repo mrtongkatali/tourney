@@ -64,7 +64,10 @@ namespace tourney.api.Controllers
             if (!ModelState.IsValid)
             {
                 var errors = ModelStateHelper.GetErrors(ModelState);
-                return BadRequest(ApiResponseHelper.Error<string>("Invalid input", errors));
+                var errorDetailed = ModelStateHelper.GetFieldErrors(ModelState);
+                // return BadRequest(ApiResponseHelper.Error<string>("Invalid input", errors));
+
+                return BadRequest(errorDetailed);
             }
 
             var userRequest = request.ToModel();
