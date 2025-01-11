@@ -3,6 +3,8 @@ using tourney.api.Mappers;
 using Microsoft.AspNetCore.Mvc;
 using tourney.api.Repositories;
 using tourney.api.Services;
+using tourney.api.Helpers;
+using api.Helpers;
 
 namespace tourney.api.Controllers
 {
@@ -40,7 +42,10 @@ namespace tourney.api.Controllers
                 return NotFound();
             }
 
-            return Ok(user.AsPartialResponse());
+            return Ok(ApiResponseHelper.Success(
+                user.AsPartialResponse(),
+                "Success"
+            ));
         }
 
         [HttpPost]
@@ -58,14 +63,18 @@ namespace tourney.api.Controllers
 
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                var errors = ModelStateHelper.GetErrors(ModelState);
+                return BadRequest(ApiResponseHelper.Error<string>("Invalid input", errors));
             }
 
             var userRequest = request.ToModel();
 
             await _userRepository.Create(userRequest, "");
 
-            return CreatedAtAction(nameof(GetById), new { id = userRequest.Id }, userRequest.AsPartialResponse()); 
+            return CreatedAtAction(nameof(GetById), new { id = userRequest.Id }, ApiResponseHelper.Success(
+                userRequest.AsPartialResponse(),
+                "User created successfully"
+            )); 
         }
 
         [HttpPost]
@@ -76,15 +85,18 @@ namespace tourney.api.Controllers
 
             if (user == null)
             {
-                return BadRequest("Invalid email address or password");
+                return BadRequest(ApiResponseHelper.Error("Invalid email address or password"));
             }
 
             string token = _jwtService.GenerateToken(user.Email);
 
-            return Ok(new {
+            var data = new {
                 Token = token,
                 Data = user.AsPartialResponse()
-            });
+            };
+            return Ok(
+                ApiResponseHelper.Success(data, "success")
+            );
         }
     }
 }
