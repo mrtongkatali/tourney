@@ -88,7 +88,7 @@ namespace tourney.api.Controllers
                 return BadRequest(ApiResponseHelper.Error("Invalid email address or password"));
             }
 
-            string token = _jwtService.GenerateToken(user.Email);
+            string token = _jwtService.GenerateToken(user);
 
             var data = new {
                 Token = token,

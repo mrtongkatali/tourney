@@ -1,6 +1,8 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using tourney.api.Dtos.Tournament;
+using tourney.api.Repositories;
 
 namespace tourney.api.Controllers
 {
@@ -8,11 +10,17 @@ namespace tourney.api.Controllers
     [Route("api/tournament")]
     public class Tournament : ControllerBase
     {
+        private readonly ITournamentRepository _tournamentRepository;
+        public Tournament(ITournamentRepository tournamentRepository)
+        {
+            _tournamentRepository = tournamentRepository;
+        }
+
         [HttpGet("{id}")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize]
         public IActionResult GetTournamentById(int id)
         {
-            return Ok($"Get tournament with id {id}");
+            return Ok($"Get tournament with id {User.FindFirst(ClaimTypes.NameIdentifier)?.Value}");
         }
 
         [HttpPost]

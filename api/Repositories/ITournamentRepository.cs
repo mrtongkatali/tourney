@@ -1,6 +1,6 @@
 using tourney.api.Models;
 
-namespace api.Repositories
+namespace tourney.api.Repositories
 {
     public interface ITournamentRepository
     {

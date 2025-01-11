@@ -2,9 +2,9 @@
 using tourney.api.Data;
 using tourney.api.Models;
 
-namespace api.Repositories
+namespace tourney.api.Repositories
 {
-    public class TournamentRepository
+    public class TournamentRepository : ITournamentRepository
     {
         private readonly ApplicationDbContext _dbContext;
 
@@ -16,6 +16,12 @@ namespace api.Repositories
         public async Task<Tournament?> GetByIdAsync(int id)
         {
             return await _dbContext.FindAsync<Tournament>(id);
+        }
+
+        public async Task Create(Tournament tournament)
+        {
+            await _dbContext.Tournament.AddAsync(tournament);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

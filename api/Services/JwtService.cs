@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using tourney.api.Models;
 
 namespace tourney.api.Services
 {
@@ -18,11 +19,12 @@ namespace tourney.api.Services
            _audience = configuration["Jwt:Audience"] ?? throw new ArgumentNullException(nameof(configuration), "Jwt:Audience is not configured.");
        }
 
-       public string GenerateToken(string email)
+       public string GenerateToken(User user)
        {
             var claims = new[]
             {
-                new Claim(ClaimTypes.Email, email),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Email, user.Email),
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secretKey));
