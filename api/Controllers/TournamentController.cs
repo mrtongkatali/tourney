@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using tourney.api.Dtos.Tournament;
 
@@ -8,12 +9,14 @@ namespace tourney.api.Controllers
     public class Tournament : ControllerBase
     {
         [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public IActionResult GetTournamentById(int id)
         {
             return Ok($"Get tournament with id {id}");
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Create([FromBody] CreateTourneyDto request)
         {
             return Ok("Create a new tournament");

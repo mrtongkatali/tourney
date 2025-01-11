@@ -5,6 +5,7 @@ using tourney.api.Data;
 using tourney.api.Repositories;
 using System.Text;
 using tourney.api.Services;
+using tourney.api.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,7 +36,10 @@ builder.Services.AddAuthentication(options => {
 
 // Add services to the container. 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+builder.Services.AddOpenApi(options =>
+{
+    options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
+});
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<JwtService>();
 
