@@ -37,6 +37,23 @@ public class Tournament : BaseEntity
     [Column("description", TypeName = "varchar(2000)")]
     public string Description { get; set; } = string.Empty;
 
+    [Column("start_date")]
+    [DataType(DataType.Date)]
+    public DateTime StartDate { get; set; }
+
+    [Column("end_date")]
+    [DataType(DataType.Date)]
+    public DateTime EndDate { get; set; }
+
+    [Column("prize_pool", TypeName = "decimal(18, 2)")]
+    public decimal PrizePool { get; set; }
+
+    [Column("prize_pool_currency", TypeName = "varchar(3)")]
+    public string PrizePoolCurrency { get; set; } = "USD";
+
+    [Column("participant_size", TypeName = "int")]
+    public int ParticipantSize { get; set; } = 0;
+
     [Column("status")]
     public TournamentStatus Status { get; set; } = TournamentStatus.LIVE;
 
