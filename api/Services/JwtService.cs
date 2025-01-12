@@ -34,7 +34,7 @@ namespace tourney.api.Services
                 _issuer,
                 _audience,
                 claims,
-                expires: DateTime.Now.AddMinutes(30),
+                expires: DateTime.Now.AddMinutes(999),
                 signingCredentials: creds
             );
 

@@ -1,4 +1,5 @@
 
+using Microsoft.EntityFrameworkCore;
 using tourney.api.Data;
 using tourney.api.Models;
 
@@ -13,9 +14,9 @@ namespace tourney.api.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<Tournament?> GetByIdAsync(int id)
+        public async Task<Tournament?> GetByIdAsync(int id, int userId)
         {
-            return await _dbContext.FindAsync<Tournament>(id);
+            return await _dbContext.Tournament.FirstOrDefaultAsync(u => u.Id == id && u.UserId == userId); 
         }
 
         public async Task Create(Tournament tournament)

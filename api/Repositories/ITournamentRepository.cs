@@ -4,7 +4,7 @@ namespace tourney.api.Repositories
 {
     public interface ITournamentRepository
     {
-        Task<Tournament> GetByIdAsync(int id);
+        Task<Tournament?> GetByIdAsync(int id, int userId);
         Task Create(Tournament tournament);
     }
 }

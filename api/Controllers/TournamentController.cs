@@ -2,7 +2,11 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using tourney.api.Dtos.Tournament;
+using tourney.api.Extensions;
+using tourney.api.Helpers;
 using tourney.api.Repositories;
+using tourney.api.Models;
+using tourney.api.Mappers;
 
 namespace tourney.api.Controllers
 {
@@ -18,16 +22,35 @@ namespace tourney.api.Controllers
 
         [HttpGet("{id}")]
         [Authorize]
-        public IActionResult GetTournamentById(int id)
+        public async Task<IActionResult> GetTournamentById(int id)
         {
-            return Ok($"Get tournament with id {User.FindFirst(ClaimTypes.NameIdentifier)?.Value}");
+            var userId = HttpContext.User.GetClaimValue(ClaimTypes.NameIdentifier);
+            var tournament = await _tournamentRepository.GetByIdAsync(id, userId);
+
+            if (tournament == null) {
+                return BadRequest(ApiResponseHelper.Error("Tournament not found"));
+            }
+
+            return Ok(ApiResponseHelper.Success(tournament, "success"));
         }
 
         [HttpPost]
         [Authorize]
-        public IActionResult Create([FromBody] CreateTourneyDto request)
+        public async Task<IActionResult> Create([FromBody] CreateTourneyDto request)
         {
-            return Ok("Create a new tournament");
+            var userId = HttpContext.User.GetClaimValue(ClaimTypes.NameIdentifier);
+
+            if (ModelState.IsValid == false)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var tournamentRequest = request.toModel();
+            tournamentRequest.UserId = userId;
+
+            await _tournamentRepository.Create(tournamentRequest);
+    
+            return Ok(tournamentRequest);
         }
 
         [HttpPut("{id}")]
