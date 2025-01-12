@@ -39,11 +39,11 @@ public class Tournament : BaseEntity
 
     [Column("start_date")]
     [DataType(DataType.Date)]
-    public DateTime StartDate { get; set; }
+    public DateTime? StartDate { get; set; }
 
     [Column("end_date")]
     [DataType(DataType.Date)]
-    public DateTime EndDate { get; set; }
+    public DateTime? EndDate { get; set; }
 
     [Column("prize_pool", TypeName = "decimal(18, 2)")]
     public decimal PrizePool { get; set; }
