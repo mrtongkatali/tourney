@@ -45,12 +45,15 @@ namespace tourney.api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var tournamentRequest = request.toModel();
+            var tournamentRequest = request.ToModel();
             tournamentRequest.UserId = userId;
 
             await _tournamentRepository.Create(tournamentRequest);
-    
-            return Ok(tournamentRequest);
+
+            return CreatedAtAction(nameof(GetTournamentById), new { id = tournamentRequest.Id }, ApiResponseHelper.Success(
+                tournamentRequest.AsPartialResponse(),
+                "Tournament created successfully"
+            ));
         }
 
         [HttpPut("{id}")]
