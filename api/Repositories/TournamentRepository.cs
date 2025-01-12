@@ -19,6 +19,12 @@ namespace tourney.api.Repositories
             return await _dbContext.Tournament.FirstOrDefaultAsync(u => u.Id == id && u.UserId == userId); 
         }
 
+        public async Task Update(Tournament tournament)
+        {
+            _dbContext.Tournament.Update(tournament);
+            await _dbContext.SaveChangesAsync();
+        }
+
         public async Task Create(Tournament tournament)
         {
             await _dbContext.Tournament.AddAsync(tournament);

@@ -1,10 +1,8 @@
 using System.ComponentModel.DataAnnotations;
-using Humanizer;
-using Newtonsoft.Json;
 using tourney.api.Models;
 
 namespace tourney.api.Dtos.Tournament;
-public class CreateTourneyDto
+public class CreatePatchTourneyDto 
 {
     [Required(ErrorMessage = "Tournament name is required")]
     [StringLength(50, ErrorMessage = "Tournament name cannot exceed 50 characters")]

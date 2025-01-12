@@ -5,8 +5,8 @@ using tourney.api.Dtos.Tournament;
 using tourney.api.Extensions;
 using tourney.api.Helpers;
 using tourney.api.Repositories;
-using tourney.api.Models;
 using tourney.api.Mappers;
+using api.Helpers;
 
 namespace tourney.api.Controllers
 {
@@ -15,9 +15,11 @@ namespace tourney.api.Controllers
     public class Tournament : ControllerBase
     {
         private readonly ITournamentRepository _tournamentRepository;
+        private readonly int _sessionUserId;
         public Tournament(ITournamentRepository tournamentRepository)
         {
             _tournamentRepository = tournamentRepository;
+            _sessionUserId = HttpContext.User.GetClaimValue(ClaimTypes.NameIdentifier);
         }
 
         [HttpGet("{id}")]
@@ -36,17 +38,16 @@ namespace tourney.api.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Create([FromBody] CreateTourneyDto request)
+        public async Task<IActionResult> Create([FromBody] CreatePatchTourneyDto request)
         {
-            var userId = HttpContext.User.GetClaimValue(ClaimTypes.NameIdentifier);
-
             if (ModelState.IsValid == false)
             {
-                return BadRequest(ModelState);
+                var errorDetailed = ModelStateHelper.GetFieldErrors(ModelState);
+                return BadRequest(ApiResponseHelper.Error<string>("", errorDetailed));
             }
 
             var tournamentRequest = request.ToModel();
-            tournamentRequest.UserId = userId;
+            tournamentRequest.UserId = _sessionUserId;
 
             await _tournamentRepository.Create(tournamentRequest);
 
@@ -56,8 +57,8 @@ namespace tourney.api.Controllers
             ));
         }
 
-        [HttpPut("{id}")]
-        public IActionResult Update(int id)
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] CreatePatchTourneyDto request)
         {
             return Ok($"Update tournament with id {id}");
         }

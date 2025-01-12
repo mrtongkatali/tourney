@@ -6,5 +6,6 @@ namespace tourney.api.Repositories
     {
         Task<Tournament?> GetByIdAsync(int id, int userId);
         Task Create(Tournament tournament);
+        Task Update(Tournament tournament);
     }
 }

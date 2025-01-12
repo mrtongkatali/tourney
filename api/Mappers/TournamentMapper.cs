@@ -22,7 +22,7 @@ namespace tourney.api.Mappers
                 TournamentType = tournamentModel.TournamentType,
             };
         }
-        public static Tournament ToModel(this CreateTourneyDto dto)
+        public static Tournament ToModel(this CreatePatchTourneyDto dto)
         {
             return new Tournament
             {
