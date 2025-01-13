@@ -16,10 +16,18 @@ namespace tourney.api.Controllers
     {
         private readonly ITournamentRepository _tournamentRepository;
         private readonly int _sessionUserId;
-        public Tournament(ITournamentRepository tournamentRepository)
+        public Tournament(ITournamentRepository tournamentRepository, IHttpContextAccessor httpContextAccessor)
         {
             _tournamentRepository = tournamentRepository;
-            _sessionUserId = HttpContext.User.GetClaimValue(ClaimTypes.NameIdentifier);
+
+            if (httpContextAccessor.HttpContext?.User?.Identity?.IsAuthenticated == true)
+            {
+                var userId = httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (int.TryParse(userId, out var parsedUserId))
+                {
+                    _sessionUserId = parsedUserId;
+                }
+            }
         }
 
         [HttpGet("{id}")]
@@ -58,9 +66,27 @@ namespace tourney.api.Controllers
         }
 
         [HttpPatch("{id}")]
+        [Authorize]
         public async Task<IActionResult> Update(int id, [FromBody] CreatePatchTourneyDto request)
         {
-            return Ok($"Update tournament with id {id}");
+            if (ModelState.IsValid == false)
+            {
+                var errorDetailed = ModelStateHelper.GetFieldErrors(ModelState);
+                return BadRequest(ApiResponseHelper.Error<string>("", errorDetailed));
+            }
+
+            try
+            {
+                var tournamentRequest = request.ToModel();
+                tournamentRequest.Id = id;
+                await _tournamentRepository.Update(tournamentRequest, _sessionUserId);
+
+                return Ok($"Update tournament with id {id}");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ApiResponseHelper.Error(ex.Message));
+            }
         }
 
         [HttpDelete("{id}")]

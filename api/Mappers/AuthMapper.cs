@@ -3,7 +3,7 @@ using tourney.api.Models;
 
 namespace tourney.api.Mappers
 {
-    public static class AuthMappers
+    public static class AuthMapper
     {
         public static AuthDto AsPartialResponse(this User userModel)
         {

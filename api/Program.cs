@@ -33,6 +33,7 @@ builder.Services.AddAuthentication(options => {
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SecretKey"]))
     };
 });
+builder.Services.AddHttpContextAccessor();
 
 // Add services to the container. 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
