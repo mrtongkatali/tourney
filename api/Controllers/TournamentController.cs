@@ -46,7 +46,7 @@ namespace tourney.api.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Create([FromBody] CreatePatchTourneyDto request)
+        public async Task<IActionResult> Create([FromBody] CreateTournamentDto request)
         {
             if (ModelState.IsValid == false)
             {
@@ -67,7 +67,7 @@ namespace tourney.api.Controllers
 
         [HttpPatch("{id}")]
         [Authorize]
-        public async Task<IActionResult> Update(int id, [FromBody] CreatePatchTourneyDto request)
+        public async Task<IActionResult> Update(int id, [FromBody] PatchTournamentDto request)
         {
             if (ModelState.IsValid == false)
             {
@@ -77,9 +77,7 @@ namespace tourney.api.Controllers
 
             try
             {
-                var tournamentRequest = request.ToModel();
-                tournamentRequest.Id = id;
-                await _tournamentRepository.Update(tournamentRequest, _sessionUserId);
+                await _tournamentRepository.Update(request, id, _sessionUserId);
 
                 return Ok($"Update tournament with id {id}");
             }

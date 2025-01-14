@@ -1,6 +1,10 @@
 
+using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using tourney.api.Data;
+using tourney.api.Dtos.Tournament;
+using tourney.api.Helpers;
 using tourney.api.Mappers;
 using tourney.api.Models;
 
@@ -8,11 +12,9 @@ namespace tourney.api.Repositories
 {
     public class TournamentRepository : ITournamentRepository
     {
-        private readonly DynamicMapper _dynamicMapper;
         private readonly ApplicationDbContext _dbContext;
-        public TournamentRepository(DynamicMapper mapper, ApplicationDbContext dbContext)
+        public TournamentRepository(ApplicationDbContext dbContext)
         {
-            _dynamicMapper = mapper;
             _dbContext = dbContext;
         }
 
@@ -21,21 +23,21 @@ namespace tourney.api.Repositories
             return await _dbContext.Tournament.FirstOrDefaultAsync(u => u.Id == id && u.UserId == userId); 
         }
 
-        public async Task Update(Tournament tournament, int userId)
+        public async Task Update(PatchTournamentDto dto, int tournamentId, int userId)
         {
-            var oldModel = await GetByIdAsync(tournament.Id, userId);
+            var oldModel = await GetByIdAsync(tournamentId, userId);
 
             if (oldModel == null) {
                 throw new Exception("Tournament not found");
             }
 
-            // _dynamicMapper.Map(tournament, oldModel);
+            var config = new MapperConfiguration(cfg => cfg.AddProfile<TournamentProfile>());
+            var mapper = config.CreateMapper();
 
-            // Console.WriteLine(JsonHelper.SerializeModel(oldModel));
-
-
-            // _dbContext.Entry(oldModel).CurrentValues.SetValues(tournament);
-            // await _dbContext.SaveChangesAsync();
+            var updatedModel = mapper.Map(dto, oldModel);
+            
+            _dbContext.Tournament.Update(updatedModel);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task Create(Tournament tournament)
