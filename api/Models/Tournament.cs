@@ -1,10 +1,14 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using api.Models;
 
 namespace tourney.api.Models;
 public enum TournamentStatus 
 {
+    [Description("Archived")]
+    ARCHIVED = 0,
+
     [Description("Live")]
     LIVE = 1,
 
@@ -62,4 +66,5 @@ public class Tournament : BaseEntity
 
     public User? User { get; set; }
     public ICollection<Team> Teams { get; set; } = new List<Team>();
+    public ICollection<TournamentStage> Stages { get; set; } = new List<TournamentStage>();
 }

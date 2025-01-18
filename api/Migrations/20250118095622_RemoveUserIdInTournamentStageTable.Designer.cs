@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using tourney.api.Data;
@@ -11,9 +12,11 @@ using tourney.api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250118095622_RemoveUserIdInTournamentStageTable")]
+    partial class RemoveUserIdInTournamentStageTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,15 +38,6 @@ namespace api.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("varchar(2000)")
-                        .HasColumnName("description");
-
-                    b.Property<DateTime?>("EndDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("end_date");
-
                     b.Property<string>("StageName")
                         .IsRequired()
                         .HasColumnType("varchar(100)")
@@ -52,10 +46,6 @@ namespace api.Migrations
                     b.Property<int>("StageOrder")
                         .HasColumnType("int")
                         .HasColumnName("stage_order");
-
-                    b.Property<DateTime?>("StartDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("start_date");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer")
@@ -73,7 +63,7 @@ namespace api.Migrations
 
                     b.HasIndex("TournamentId");
 
-                    b.ToTable("tournament_stages");
+                    b.ToTable("TournamentStage");
                 });
 
             modelBuilder.Entity("tourney.api.Models.Team", b =>

@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using tourney.api.Models;
 
 namespace tourney.api.Dtos.Tournament;
 public class PatchTournamentDto 
@@ -14,4 +15,6 @@ public class PatchTournamentDto
     public decimal PrizePool { get; set; }
     public string? PrizePoolCurrency { get; set; } 
     public int ParticipantSize { get; set; }
+    public TournamentStatus Status { get; set; }
+
 }

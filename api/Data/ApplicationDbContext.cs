@@ -1,5 +1,6 @@
 using tourney.api.Models;
 using Microsoft.EntityFrameworkCore;
+using api.Models;
 
 namespace tourney.api.Data
 {
@@ -33,6 +34,12 @@ namespace tourney.api.Data
                 .HasOne(e => e.User)
                 .WithMany(e => e.Tournaments)
                 .HasForeignKey(e => e.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<TournamentStage>()
+                .HasOne(e => e.Tournament)
+                .WithMany(e => e.Stages)
+                .HasForeignKey(e => e.TournamentId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Team>()

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using tourney.api.Data;
@@ -11,9 +12,11 @@ using tourney.api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250118085726_AddArchivedournamentStatus")]
+    partial class AddArchivedournamentStatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,60 +24,6 @@ namespace api.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("api.Models.TournamentStage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("varchar(2000)")
-                        .HasColumnName("description");
-
-                    b.Property<DateTime?>("EndDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("end_date");
-
-                    b.Property<string>("StageName")
-                        .IsRequired()
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("stage_name");
-
-                    b.Property<int>("StageOrder")
-                        .HasColumnType("int")
-                        .HasColumnName("stage_order");
-
-                    b.Property<DateTime?>("StartDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("start_date");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer")
-                        .HasColumnName("status");
-
-                    b.Property<int>("TournamentId")
-                        .HasColumnType("integer")
-                        .HasColumnName("tournament_id");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("updated_at");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TournamentId");
-
-                    b.ToTable("tournament_stages");
-                });
 
             modelBuilder.Entity("tourney.api.Models.Team", b =>
                 {
@@ -253,17 +202,6 @@ namespace api.Migrations
                     b.ToTable("user_profiles");
                 });
 
-            modelBuilder.Entity("api.Models.TournamentStage", b =>
-                {
-                    b.HasOne("tourney.api.Models.Tournament", "Tournament")
-                        .WithMany("Stages")
-                        .HasForeignKey("TournamentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Tournament");
-                });
-
             modelBuilder.Entity("tourney.api.Models.Team", b =>
                 {
                     b.HasOne("tourney.api.Models.Tournament", "Tournament")
@@ -299,8 +237,6 @@ namespace api.Migrations
 
             modelBuilder.Entity("tourney.api.Models.Tournament", b =>
                 {
-                    b.Navigation("Stages");
-
                     b.Navigation("Teams");
                 });
 

@@ -79,7 +79,7 @@ namespace tourney.api.Controllers
             {
                 await _tournamentRepository.Update(request, id, _sessionUserId);
 
-                return Ok($"Update tournament with id {id}");
+                return Ok(ApiResponseHelper.Success("Tournament updated successfully"));
             }
             catch (Exception ex)
             {
@@ -87,10 +87,11 @@ namespace tourney.api.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        [HttpPost("{tournamentId}/create-stage")]
+        [Authorize]
+        public async Task<IActionResult> CreateStage(int tournamentId)
         {
-            return Ok($"Delete tournament with id {id}");
+            return Ok($"Create stage for tournament with id {tournamentId}");
         }
 
         [HttpPost("publish/{id}")]
