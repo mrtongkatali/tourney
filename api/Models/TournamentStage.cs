@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace tourney.api.Models;
-
 public enum StageStatus
 {
     [Description("Archived")]

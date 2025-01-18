@@ -36,7 +36,7 @@ namespace tourney.api.Data
                         Email = "user1@demo.com",
                         FirstName = "One",
                         LastName = "User",
-                        Password = "$2a$11$xxSr0TbY8Z35dqCMe.mL3uZmwRys.n6ShpzMByo1PsmORKwgy0hZy",
+                        Password = "$2a$11$jPAlB6ahitx.hOeM4FGOY.muL9kkpHaY/vvvSz85byMpbKR4vp0ya", // P@ssw0rd
                         Status = UserStatus.ACTIVE,
                     },
                     new User
@@ -44,7 +44,7 @@ namespace tourney.api.Data
                         Email = "user2@demo.com",
                         FirstName = "Two",
                         LastName = "User",
-                        Password = "$2a$11$xxSr0TbY8Z35dqCMe.mL3uZmwRys.n6ShpzMByo1PsmORKwgy0hZy",
+                        Password = "$2a$11$jPAlB6ahitx.hOeM4FGOY.muL9kkpHaY/vvvSz85byMpbKR4vp0ya", // P@ssw0rd
                         Status = UserStatus.ACTIVE,
                     }
                 );
@@ -73,8 +73,33 @@ namespace tourney.api.Data
                 );
             
             context.SaveChanges();
-        }
 
+            context.TournamentStage
+                .AddRange(
+                    new TournamentStage
+                    {
+                        TournamentId = 1,
+                        StageName = "Group Stage",
+                        StageOrder = 0,
+                        StartDate = DateTime.UtcNow,
+                        EndDate = DateTime.UtcNow.AddDays(7),
+                        Status = StageStatus.ACTIVE,
+                        StageFormat = StageFormat.GROUP_STAGE_DOUBLE
+                    },
+                    new TournamentStage
+                    {
+                        TournamentId = 1,
+                        StageName = "Playoffs",
+                        StageOrder = 1,
+                        StartDate = DateTime.UtcNow.AddDays(3),
+                        EndDate = DateTime.UtcNow.AddDays(5),
+                        Status = StageStatus.ACTIVE,
+                        StageFormat = StageFormat.DOUBLE_ELIMINATION
+                    }
+                );
+            
+            context.SaveChanges();
+        }
         public static void SeedTeams(ApplicationDbContext context)
         {
             context.Team

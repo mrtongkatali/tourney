@@ -20,7 +20,10 @@ namespace tourney.api.Repositories
 
         public async Task<Tournament?> GetByIdAsync(int id, int userId)
         {
-            return await _dbContext.Tournament.FirstOrDefaultAsync(u => u.Id == id && u.UserId == userId); 
+            return await _dbContext.Tournament
+                .Where(u => u.Id == id && u.UserId == userId)
+                .Include(t => t.Teams)
+                .FirstOrDefaultAsync();
         }
 
         public async Task Update(PatchTournamentDto dto, int tournamentId, int userId)

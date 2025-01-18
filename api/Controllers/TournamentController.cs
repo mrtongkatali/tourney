@@ -87,23 +87,16 @@ namespace tourney.api.Controllers
             }
         }
 
-        [HttpPost("{tournamentId}/create-stage")]
-        [Authorize]
-        public async Task<IActionResult> CreateStage(int tournamentId)
-        {
-            return Ok($"Create stage for tournament with id {tournamentId}");
-        }
-
         [HttpPost("publish/{id}")]
         public IActionResult Publish(int id)
         {
             return Ok($"Update tournament with id {id}");
         }
-
-        [HttpGet("{id}/teams")]
-        public IActionResult GetSignedTeams(int id)
-        {
-            return Ok($"Get teams for tournament with id {id}");
-        }
+        
+       [HttpGet("all")]
+       public async Task<IActionResult> GetAll()
+       {
+           return Ok("Get all tournaments");
+       }
     }
 }

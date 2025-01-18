@@ -13,6 +13,7 @@ namespace tourney.api.Data
         public DbSet<User> User { get; set; } = default!;
         public DbSet<UserProfile> UserProfile { get; set; } = default!;
         public DbSet<Tournament> Tournament { get; set; } = default!;
+        public DbSet<TournamentStage> TournamentStage { get; set; } = default!;
         public DbSet<Team> Team { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
