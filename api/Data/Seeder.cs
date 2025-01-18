@@ -18,6 +18,7 @@ namespace tourney.api.Data
             await context.Database.ExecuteSqlRawAsync("ALTER SEQUENCE tournament_id_sequence RESTART WITH 1");
             await context.Database.ExecuteSqlRawAsync("ALTER SEQUENCE tournament_stage_id_sequence RESTART WITH 1");
             await context.Database.ExecuteSqlRawAsync("ALTER SEQUENCE team_id_sequence RESTART WITH 1");
+            await context.Database.ExecuteSqlRawAsync("ALTER SEQUENCE users_id_sequence RESTART WITH 1");
         }
         public static void SeedAll(ApplicationDbContext context)
         {

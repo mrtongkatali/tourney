@@ -19,10 +19,18 @@ namespace tourney.api.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            // User
+            modelBuilder.HasSequence<int>("users_id_sequence")
+                .StartsAt(1)
+                .IncrementsBy(1);
+
             modelBuilder.Entity<User>(entity =>
             {
                 entity.HasIndex(e => e.Email)
                     .IsUnique();
+                
+                entity.Property(e => e.Id)
+                    .HasDefaultValueSql("nextval('\"users_id_sequence\"')");
             });
 
             // UserProfile
