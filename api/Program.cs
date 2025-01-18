@@ -50,7 +50,7 @@ var app = builder.Build();
 var scope = app.Services.CreateScope();
 var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-if (args.Contains("seed:all"))
+if (args.Contains("seed:reset"))
 {
     Seeder.SeedAll(context);
     Console.WriteLine("Database seeded!");

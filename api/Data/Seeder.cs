@@ -1,11 +1,27 @@
+using Microsoft.CodeAnalysis.Scripting.Hosting;
+using Microsoft.EntityFrameworkCore;
 using tourney.api.Models;
 
 namespace tourney.api.Data
 {
     public class Seeder
     {
+        public static async void TruncateAll(ApplicationDbContext context)
+        {
+            context.Database.ExecuteSqlRaw("TRUNCATE TABLE user_profiles CASCADE;");
+            context.Database.ExecuteSqlRaw("TRUNCATE TABLE teams CASCADE;");
+            context.Database.ExecuteSqlRaw("TRUNCATE TABLE tournament_stages CASCADE;");
+            context.Database.ExecuteSqlRaw("TRUNCATE TABLE tournaments CASCADE;");
+            context.Database.ExecuteSqlRaw("TRUNCATE TABLE users CASCADE;");
+
+            await context.Database.ExecuteSqlRawAsync("ALTER SEQUENCE user_profile_id_sequence RESTART WITH 1");
+            await context.Database.ExecuteSqlRawAsync("ALTER SEQUENCE tournament_id_sequence RESTART WITH 1");
+            await context.Database.ExecuteSqlRawAsync("ALTER SEQUENCE tournament_stage_id_sequence RESTART WITH 1");
+            await context.Database.ExecuteSqlRawAsync("ALTER SEQUENCE team_id_sequence RESTART WITH 1");
+        }
         public static void SeedAll(ApplicationDbContext context)
         {
+            TruncateAll(context);
             SeedUsers(context);
             SeedTournaments(context);
             SeedTeams(context);
@@ -33,6 +49,8 @@ namespace tourney.api.Data
                 );
 
             context.SaveChanges();
+
+            Console.WriteLine("Seeded users");
         }
 
         public static void SeedTournaments(ApplicationDbContext context)
@@ -45,6 +63,11 @@ namespace tourney.api.Data
                         UserId = 1,
                         TournamentType = TournamentType.HYBRID,
                         Status = TournamentStatus.LIVE,
+                        StartDate = DateTime.UtcNow,
+                        EndDate = DateTime.UtcNow.AddDays(5),
+                        PrizePool = 1000000,
+                        ParticipantSize = 16,
+                        PrizePoolCurrency = "USD",
                     }
                 );
             
