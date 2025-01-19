@@ -20,7 +20,7 @@ public static class TournamentMapper
             ParticipantSize = tournamentModel.ParticipantSize,
             Status = tournamentModel.Status,
             TournamentType = tournamentModel.TournamentType,
-            // Teams = tournamentModel.Teams.Select(t => t.AsResponse()).ToList(),
+            Teams = tournamentModel.Teams.Select(t => t.AsPartialResponse()).ToList(),
         };
     }
     public static TournamentDto AsPartialResponse(this Tournament tournamentModel)

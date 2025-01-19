@@ -1,3 +1,4 @@
+using tourney.api.Dtos.Team;
 using tourney.api.Models;
 
 namespace tourney.api.Dtos.Tournament
@@ -15,5 +16,6 @@ namespace tourney.api.Dtos.Tournament
         public int ParticipantSize { get; set; } = 0;
         public TournamentStatus Status { get; set; } = TournamentStatus.LIVE;
         public TournamentType TournamentType { get; set; } = TournamentType.HYBRID;
+        public List<TeamDto> Teams { get; set; } = new List<TeamDto>();
     }
 }

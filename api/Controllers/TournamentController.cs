@@ -41,7 +41,7 @@ namespace tourney.api.Controllers
                 return BadRequest(ApiResponseHelper.Error("Tournament not found"));
             }
 
-            return Ok(ApiResponseHelper.Success(tournament, "success"));
+            return Ok(ApiResponseHelper.Success(tournament.AsResponse(), "success"));
         }
 
         [HttpPost]
