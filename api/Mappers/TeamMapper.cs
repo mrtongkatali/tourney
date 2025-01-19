@@ -10,6 +10,8 @@ public static class TeamMapper
        {
            Id = teamModel.Id,
            Name = teamModel.Name,
+           Description = teamModel.Description,
+           Status = teamModel.Status,
        };
    }
 }

@@ -87,6 +87,13 @@ namespace tourney.api.Controllers
             }
         }
 
+        [HttpPatch("{id}/stage/{stageId}")]
+        [Authorize]
+        public async Task<IActionResult> UpdateStage(int id, int stageId)
+        {
+            return Ok("UpdateStage");
+        }
+
         [HttpPost("publish/{id}")]
         public IActionResult Publish(int id)
         {
